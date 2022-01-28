@@ -1,0 +1,24 @@
+name: update pull request branch by pull request comment
+on: issue_comment
+jobs:
+  main:
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_comment-use-issue_comment
+    name: PR comment
+    if: github.event.issue.pull_request && github.event.comment.body == '/update'
+    runs-on: ubuntu-latest
+    steps:
+      # secrets.GITHUB_TOKEN can't be used because it can't trigger GitHub Actions Workflow
+      # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#using-the-github_token-in-a-workflow
+      # > When you use the repository's GITHUB_TOKEN to perform tasks, events triggered by the GITHUB_TOKEN will not create a new workflow run
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      # https://cli.github.com/manual/gh_api
+      # https://docs.github.com/en/rest/reference/pulls#update-a-pull-request-branch
+      - run: gh api -X PUT repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.issue.number }}/update-branch
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
