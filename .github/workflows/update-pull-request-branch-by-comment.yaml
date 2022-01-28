@@ -3,7 +3,6 @@ on: issue_comment
 jobs:
   main:
     # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_comment-use-issue_comment
-    name: PR comment
     if: github.event.issue.pull_request && github.event.comment.body == '/update'
     runs-on: ubuntu-latest
     steps:
