@@ -1,5 +1,11 @@
 # example-github-action-update-pull-request-by-comment
 
+## :warning: This workflow is no longer needed
+
+GitHub officially supports this feature. https://github.blog/changelog/2022-02-03-more-ways-to-keep-your-pull-request-branch-up-to-date/
+
+---
+
 Example of GitHub Actions Workflow to update pull request by pull request comment
 
 ## Overview
